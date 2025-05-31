@@ -1,5 +1,8 @@
-﻿using Horizons.ECommerceDemo.Application.Commands;
+﻿using AutoMapper;
+using Horizons.ECommerceDemo.Application.Commands;
+using Horizons.ECommerceDemo.Application.Dtos;
 using Horizons.ECommerceDemo.Domain.Interfaces;
+using Horizons.ECommerceDemo.Domain.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,33 +12,31 @@ using System.Threading.Tasks;
 
 namespace Horizons.ECommerceDemo.Application.Commands.CommandsHandlers
 {
-    public class CancelOrderCommandHandler : IRequestHandler<CancelOrderCommand,bool>
+    public class CancelOrderCommandHandler : IRequestHandler<CancelOrderCommand, OrderDto>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderService _orderService;
+        private readonly IMapper _mapper;
 
-        public CancelOrderCommandHandler(IOrderRepository orderRepository)
+        public CancelOrderCommandHandler(IOrderService orderService, IMapper mapper)
         {
-            _orderRepository = orderRepository;
+           
+            _orderService = orderService;
+            _mapper = mapper;
         }
 
-        public async Task<bool> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderDto> Handle(CancelOrderCommand request, CancellationToken cancellationToken)
         {
             try
             {
 
-
-                var order = await _orderRepository.GetByIdAsync(request.OrderId);
-                if (order == null) throw new ArgumentException("Order not found");
-
-                order.Cancel();
-                await _orderRepository.UpdateAsync(order);
-                return true;
+                var order = await _orderService.CancelOrderAsync(request.OrderId);
+                return _mapper.Map<OrderDto>(order);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
     }

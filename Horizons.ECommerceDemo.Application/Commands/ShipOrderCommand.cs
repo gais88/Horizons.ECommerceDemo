@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Horizons.ECommerceDemo.Application.Dtos;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace Horizons.ECommerceDemo.Application.Commands
 {
-    public record ShipOrderCommand(Guid OrderId) : IRequest<bool>;
+    public record ShipOrderCommand(Guid OrderId) : IRequest<OrderDto>;
 
 }

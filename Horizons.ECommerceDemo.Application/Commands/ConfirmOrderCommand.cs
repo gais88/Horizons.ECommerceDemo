@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace Horizons.ECommerceDemo.Application.Commands
 {
-    public record ConfirmOrderCommand(Guid OrderId) : IRequest<bool>;
+    public record ConfirmOrderCommand(Guid OrderId) : IRequest<OrderDto>;
 }

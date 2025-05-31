@@ -2,6 +2,7 @@
 using Horizons.ECommerceDemo.Application.Commands;
 using Horizons.ECommerceDemo.Application.Dtos;
 using Horizons.ECommerceDemo.Domain.Interfaces;
+using Horizons.ECommerceDemo.Domain.Services;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,38 +12,36 @@ using System.Threading.Tasks;
 
 namespace Horizons.ECommerceDemo.Application.Commands.CommandsHandlers
 {
-    public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand,bool>
+    public class ConfirmOrderCommandHandler : IRequestHandler<ConfirmOrderCommand,OrderDto>
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderService _orderService;
         private readonly IMapper _mapper;
 
 
         public ConfirmOrderCommandHandler(
-            IOrderRepository orderRepository
-,           IMapper mapper)
+          IMapper mapper,
+          IOrderService orderService)
         {
-            _orderRepository = orderRepository;
+          
             _mapper = mapper;
+            _orderService = orderService;
         }
 
-        public async Task<bool> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
+        public async Task<OrderDto> Handle(ConfirmOrderCommand request, CancellationToken cancellationToken)
         {
             try
             {
 
-            var order = await _orderRepository.GetByIdAsync(request.OrderId);
-            if (order == null) throw new ArgumentException("Order not found");
+                var order = await _orderService.ConfirmOrderAsync(request.OrderId);
+                return _mapper.Map<OrderDto>(order);
 
-                order.Confirm();
-             await _orderRepository.UpdateAsync(order);
-                return  true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
-            
+
 
         }
     }

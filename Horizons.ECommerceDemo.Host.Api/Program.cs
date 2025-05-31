@@ -16,9 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddApplicationService();
 builder.Services.AddPersistenceServices();
-builder.Services.AddScoped<IOrderService, OrderService>();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddDbContext<AppDbContext>((sp, options) =>
@@ -32,8 +32,7 @@ builder.Services.AddDbContext<AppDbContext>((sp, options) =>
     ;
 });
 
-builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 
 var app = builder.Build();
 

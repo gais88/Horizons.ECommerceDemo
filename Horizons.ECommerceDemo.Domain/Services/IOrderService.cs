@@ -11,6 +11,9 @@ namespace Horizons.ECommerceDemo.Domain.Services
     public interface IOrderService
     {
         public  Task<Order> PlaceOrderAsync(Guid customerId, IEnumerable<OrderItem> items);
-        public Task CancelOrderAsync(Guid orderId);
+        public Task<Order> CancelOrderAsync(Guid orderId);
+        public Task<Order> ConfirmOrderAsync(Guid orderId);
+        public Task<Order> ShipOrderAsync(Guid orderId);
+        public Task<Order> DeliverOrderAsync(Guid orderId);
     }
 }

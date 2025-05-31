@@ -42,7 +42,7 @@ namespace Horizons.ECommerceDemo.Domain.Services
             return order;
         }
 
-        public async Task CancelOrderAsync(Guid orderId)
+        public async Task<Order> CancelOrderAsync(Guid orderId)
         {
             var order = await _orderRepository.GetByIdAsync(orderId);
             if (order == null)
@@ -52,6 +52,46 @@ namespace Horizons.ECommerceDemo.Domain.Services
 
             order.Cancel();
             await _orderRepository.UpdateAsync(order);
+            return order;
+        }
+
+        public async Task<Order> ConfirmOrderAsync(Guid orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                throw new ArgumentException("Order not found", nameof(orderId));
+            }
+
+            order.Confirm();
+            await _orderRepository.UpdateAsync(order);
+            return order;
+        }
+
+        public async Task<Order> ShipOrderAsync(Guid orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                throw new ArgumentException("Order not found", nameof(orderId));
+            }
+
+            order.Ship();
+            await _orderRepository.UpdateAsync(order);
+            return order;
+        }
+
+        public async Task<Order> DeliverOrderAsync(Guid orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+            if (order == null)
+            {
+                throw new ArgumentException("Order not found", nameof(orderId));
+            }
+
+            order.Deliver();
+            await _orderRepository.UpdateAsync(order);
+            return order;
         }
     }
 }

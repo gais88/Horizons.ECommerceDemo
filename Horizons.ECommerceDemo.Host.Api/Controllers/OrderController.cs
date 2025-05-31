@@ -34,28 +34,28 @@ namespace Horizons.ECommerceDemo.Host.Api.Controllers
             return result;
         }
         [HttpPost("ConfirmOrder/{id:Guid}")]
-        public async Task<ActionResult<bool>> ConfirmOrder(Guid id)
+        public async Task<ActionResult<OrderDto>> ConfirmOrder(Guid id)
         {
             var comamand = new ConfirmOrderCommand(id);
             var result = await _mediator.Send(comamand);
             return result;
         }
         [HttpPost("CancelOrder/{id:Guid}")]
-        public async Task<ActionResult<bool>> CancelOrder(Guid id)
+        public async Task<ActionResult<OrderDto>> CancelOrder(Guid id)
         {
             var comamand = new CancelOrderCommand(id);
             var result = await _mediator.Send(comamand);
             return result;
         }
         [HttpPost("DeliverOrderC/{id:Guid}")]
-        public async Task<ActionResult<bool>> DeliverOrderC(Guid id)
+        public async Task<ActionResult<OrderDto>> DeliverOrderC(Guid id)
         {
             var comamand = new DeliverOrderCommand(id);
             var result = await _mediator.Send(comamand);
             return result;
         }
         [HttpPost("ShipOrderC/{id:Guid}")]
-        public async Task<ActionResult<bool>> ShipOrderC(Guid id)
+        public async Task<ActionResult<OrderDto>> ShipOrderC(Guid id)
         {
             var comamand = new ShipOrderCommand(id);
             var result = await _mediator.Send(comamand);
